@@ -1,1 +1,1791 @@
-[]
+##################################################################################################
+# Smart Button Lea
+##################################################################################################
+
+- alias: Turn_on_Flo
+  trigger:
+    - platform: state
+      entity_id: sensor.0x0017880108005bb6_action
+      to: 'on'
+    - platform: state
+      entity_id: sensor.0x0017880108005bb6_action
+      to: 'off'
+  condition:
+    - condition: state
+      entity_id: 'light.flo_fado'
+      state: 'off'
+  action:
+    - service: hue.hue_activate_scene
+      data_template: 
+        group_name: "Lea"
+        scene_name: >
+          {{ states('input_select.scene_lea') }}
+    - service: timer.start
+      entity_id: timer.flo_debounce
+
+- alias: Turn_off_Flo
+  trigger:
+    - platform: state
+      entity_id: sensor.0x0017880108005bb6_action
+      to: 'on'
+    - platform: state
+      entity_id: sensor.0x0017880108005bb6_action
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: 'light.lea'
+        state: 'on'
+      - condition: state
+        entity_id: timer.flo_debounce
+        state: idle
+  action:
+    service: rest_command.flo_lightOff_request
+
+- alias: Switch_Flo
+  trigger:
+    - platform: state
+      entity_id: sensor.0x0017880108005bb6_action
+      to: 'on'
+    - platform: state
+      entity_id: sensor.0x0017880108005bb6_action
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: 'light.lea'
+        state: 'on'
+      - condition: state
+        entity_id: timer.flo_debounce
+        state: active
+  action:
+    - service: input_select.select_next
+      entity_id: input_select.scene_lea
+    - service: hue.hue_activate_scene
+      data_template: 
+        group_name: "Lea"
+        scene_name: >
+          {{ states('input_select.scene_lea') }}
+    - service: timer.cancel
+      entity_id: timer.flo_debounce
+    - service: timer.start
+      entity_id: timer.flo_debounce
+
+- alias: Night_Switch_Flo
+  trigger:
+    - platform: state
+      entity_id: sensor.0x0017880108005bb6_action
+      to: 'skip_backward'
+  condition:
+    - condition: state
+      entity_id: timer.flo_debounce
+      state: idle
+  action:
+    - service_template: >
+        {% if is_state('input_boolean.lea_nachtmodus', 'off') %}
+          rest_command.flo_lightoff_request
+        {% else %} 
+          rest_command.flo_lighton_request
+        {% endif %}
+    - service_template: >
+        {% if is_state('input_boolean.lea_nachtmodus', 'off') %}
+          input_boolean.turn_on
+        {% else %}
+          input_boolean.turn_off
+        {% endif %}
+      entity_id: input_boolean.lea_nachtmodus
+    - service: timer.cancel
+      entity_id: timer.flo_debounce
+    - service: timer.start
+      entity_id: timer.flo_debounce
+
+- alias: flo_Night_mode_timer_start
+  trigger:
+    - platform: state
+      entity_id: input_boolean.lea_nachtmodus
+      from: 'off'
+      to: 'on'
+  action:
+    - service: timer.start
+      entity_id: timer.flo_nightmode_counter
+
+- alias: flo_Night_mode_timer_stop
+  trigger:
+    - platform: state
+      entity_id: input_boolean.lea_nachtmodus
+      from: 'on'
+      to: 'off'
+  action:
+    - service: timer.cancel
+      entity_id: timer.flo_nightmode_counter
+
+- alias: flo_Night_mode_timer_expired
+  trigger:
+    - platform: state
+      entity_id: timer.flo_nightmode_counter
+      from: active
+      to: idle
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.lea_nachtmodus
+
+##################################################################################################
+# Smart Button Christian
+##################################################################################################
+
+- alias: Turn_on_Chris
+  trigger:
+    - platform: state
+      entity_id: sensor.0x0017880108005baf_action
+      to: 'on'
+    - platform: state
+      entity_id: sensor.0x0017880108005baf_action
+      to: 'off'
+  condition:
+    - condition: state
+      entity_id: 'light.christian_2'
+      state: 'off'
+  action:
+    - service: rest_command.chris_lighton_request
+    - service: timer.cancel
+      entity_id: timer.chris_debounce
+    - service: timer.start
+      entity_id: timer.chris_debounce
+
+- alias: Turn_off_Chris
+  trigger:
+    - platform: state
+      entity_id: sensor.0x0017880108005baf_action
+      to: 'on'
+    - platform: state
+      entity_id: sensor.0x0017880108005baf_action
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: 'light.christian_2'
+        state: 'on'
+      - condition: state
+        entity_id: timer.chris_debounce
+        state: idle
+  action:
+    service: rest_command.chris_lightoff_request
+
+- alias: Switch_Chris
+  trigger:
+    - platform: state
+      entity_id: sensor.0x0017880108005baf_action
+      to: 'on'
+    - platform: state
+      entity_id: sensor.0x0017880108005baf_action
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: 'light.christian_2'
+        state: 'on'
+      - condition: state
+        entity_id: timer.chris_debounce
+        state: active
+  action:
+    - service: input_select.select_next
+      entity_id: input_select.scene_chris
+    - service: hue.hue_activate_scene
+      data_template: 
+        group_name: "Christian"
+        scene_name: >
+          {{ states('input_select.scene_chris') }}
+    - service: timer.cancel
+      entity_id: timer.chris_debounce
+    - service: timer.start
+      entity_id: timer.chris_debounce
+
+- alias: Night_Switch_Chris
+  trigger:
+    - platform: state
+      entity_id: sensor.0x0017880108005baf_action
+      to: 'skip_backward'
+  condition:
+    - condition: state
+      entity_id: timer.chris_debounce
+      state: idle
+  action:
+    - service_template: >
+        {% if is_state('input_boolean.christian_nachtmodus', 'off') %}
+          rest_command.chris_lightoff_request
+        {% else %} 
+          rest_command.chris_lighton_request
+        {% endif %}
+    - service_template: >
+        {% if is_state('input_boolean.christian_nachtmodus', 'off') %}
+          input_boolean.turn_on
+        {% else %} 
+          input_boolean.turn_off
+        {% endif %}
+      entity_id: input_boolean.christian_nachtmodus
+    - service: timer.cancel
+      entity_id: timer.chris_debounce
+    - service: timer.start
+      entity_id: timer.chris_debounce
+
+- alias: chris_Night_mode_timer_start
+  trigger:
+    - platform: state
+      entity_id: input_boolean.christian_nachtmodus
+      from: 'off'
+      to: 'on'
+  action:
+    - service: timer.start
+      entity_id: timer.christian_nightmode_counter
+
+- alias: chris_Night_mode_timer_stop
+  trigger:
+    - platform: state
+      entity_id: input_boolean.christian_nachtmodus
+      from: 'on'
+      to: 'off'
+  action:
+    - service: timer.cancel
+      entity_id: timer.christian_nightmode_counter
+
+- alias: chris_Night_mode_timer_expired
+  trigger:
+    - platform: state
+      entity_id: timer.christian_nightmode_counter
+      from: active
+      to: idle
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.christian_nachtmodus
+
+  
+
+##################################################################################################
+# Smart Button Simon 
+##################################################################################################
+
+- alias: Turn_on_Simon
+  trigger:
+    - platform: state
+      entity_id: sensor.0x0017880108005f02_action
+      to: 'on'
+    - platform: state
+      entity_id: sensor.0x0017880108005f02_action
+      to: 'off'
+  condition:
+    - condition: state
+      entity_id: 'group.simon'
+      state: 'off'
+  action:
+    - service: rest_command.simon_lighton_request
+    - service: timer.cancel
+      entity_id: timer.simon_debounce
+    - service: timer.start
+      entity_id: timer.simon_debounce
+
+- alias: Turn_off_Simon
+  trigger:
+    - platform: state
+      entity_id: sensor.0x0017880108005f02_action
+      to: 'on'
+    - platform: state
+      entity_id: sensor.0x0017880108005f02_action
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: 'group.simon'
+        state: 'on'
+      - condition: state
+        entity_id: timer.simon_debounce
+        state: idle
+  action:
+    service: rest_command.simon_lightoff_request
+
+- alias: Switch_Simon
+  trigger:
+    - platform: state
+      entity_id: sensor.0x0017880108005f02_action
+      to: 'on'
+    - platform: state
+      entity_id: sensor.0x0017880108005f02_action
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: 'group.simon'
+        state: 'on'
+      - condition: state
+        entity_id: timer.simon_debounce
+        state: active
+  action:
+    - service: input_select.select_next
+      entity_id: input_select.scene_simon
+    - service: hue.hue_activate_scene
+      data_template: 
+        group_name: "Simon"
+        scene_name: >
+          {{ states('input_select.scene_simon') }}
+    - service: timer.cancel
+      entity_id: timer.simon_debounce
+    - service: timer.start
+      entity_id: timer.simon_debounce
+
+- alias: Night_Switch_Simon
+  trigger:
+    - platform: state
+      entity_id: sensor.0x0017880108005f02_action
+      to: 'skip_backward'
+  condition:
+    - condition: state
+      entity_id: timer.simon_debounce
+      state: idle
+  action:
+    - service_template: >
+        {% if is_state('input_boolean.simon_nachtmodus', 'off') %}
+          rest_command.simon_lightoff_request
+        {% else %} 
+          rest_command.simon_lighton_request
+        {% endif %}
+    - service_template: >
+        {% if is_state('input_boolean.simon_nachtmodus', 'off') %}
+          input_boolean.turn_on
+        {% else %} 
+          input_boolean.turn_off
+        {% endif %}
+      entity_id: input_boolean.simon_nachtmodus
+    - service: timer.cancel
+      entity_id: timer.simon_debounce
+    - service: timer.start
+      entity_id: timer.simon_debounce
+
+- alias: simon_Night_mode_timer_start
+  trigger:
+    - platform: state
+      entity_id: input_boolean.simon_nachtmodus
+      from: 'off'
+      to: 'on'
+  action:
+    - service: timer.start
+      entity_id: timer.simon_nightmode_counter
+
+- alias: simon_Night_mode_timer_stop
+  trigger:
+    - platform: state
+      entity_id: input_boolean.simon_nachtmodus
+      from: 'on'
+      to: 'off'
+  action:
+    - service: timer.cancel
+      entity_id: timer.simon_nightmode_counter
+
+- alias: simon_Night_mode_timer_expired
+  trigger:
+    - platform: state
+      entity_id: timer.simon_nightmode_counter
+      from: active
+      to: idle
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.simon_nachtmodus
+
+##################################################################################################
+# Garderobe & Gang & Klo & Bad Status Change
+##################################################################################################
+
+- alias: garderobe_gang_status_switch
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: device_tracker.leas_iphone
+    - platform: state
+      entity_id: device_tracker.simons_iphone_2
+    - platform: state
+      entity_id: device_tracker.iphonevhristian_3
+    - platform: state
+      entity_id: input_boolean.christian_nachtmodus
+    - platform: state
+      entity_id:  input_boolean.lea_nachtmodus
+    - platform: state
+      entity_id: input_boolean.simon_nachtmodus
+  action:
+    - service_template: >
+        {% if (is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphonevhristian_3', 'home')) or (is_state('device_tracker.iphonevhristian_3', 'not_home') and ((is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')))) %}
+          input_boolean.turn_on
+        {% else %} 
+          input_boolean.turn_off
+        {% endif %}
+      entity_id: input_boolean.garderobe_nachtmodus
+    - service_template: >
+        {% if (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')) or  (is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('device_tracker.simons_iphone_2', 'not_home') and is_state('device_tracker.leas_iphone', 'not_home') and is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphonevhristian_3', 'home')) %}
+          input_boolean.turn_on
+        {% else %} 
+          input_boolean.turn_off
+        {% endif %}
+      entity_id: input_boolean.gang_nachtmodus
+    - service_template: >
+        {% if (is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphonevhristian_3', 'home')) or (is_state('device_tracker.iphonevhristian_3', 'not_home') and ((is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')))) %}
+          input_boolean.turn_on
+        {% else %} 
+          input_boolean.turn_off
+        {% endif %}
+      entity_id: input_boolean.klo_nachtmodus
+    - service_template: >
+        {% if (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')) or  (is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('device_tracker.simons_iphone_2', 'not_home') and is_state('device_tracker.leas_iphone', 'not_home') and is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphonevhristian_3', 'home')) %}
+          input_boolean.turn_on
+        {% else %} 
+          input_boolean.turn_off
+        {% endif %}
+      entity_id: input_boolean.bad_nachtmodus
+    
+
+##################################################################################################
+# Garderobe & Gang Nightmode Light Change
+##################################################################################################
+
+- alias: gaderobe_nightmode_activated
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.garderobe_nachtmodus
+  condition:
+    - condition: state
+      entity_id: timer.garderobe_debounce
+      state: 'active'
+  action:
+    - service_template: >
+        {% if is_state('timer.garderobe_debounce_dim', 'active') and is_state('input_boolean.garderobe_nachtmodus', 'off') %}
+          rest_command.garderobe_lighton_recall_request
+        {% elif is_state('timer.garderobe_debounce_dim', 'idle') and is_state('input_boolean.garderobe_nachtmodus', 'off') %}
+          rest_command.garderobe_lighton_recall_dim_request
+        {% elif is_state('timer.garderobe_debounce_dim', 'active') and is_state('input_boolean.garderobe_nachtmodus', 'on') %} 
+          rest_command.garderobe_lightonnight_recall_request
+        {% else %}
+          rest_command.garderobe_lightonnight_recall_request
+        {% endif %}
+
+- alias: gang_nightmode_activated
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.gang_nachtmodus
+  condition:
+    - condition: state
+      entity_id: timer.gang_debounce
+      state: 'active'
+  action:
+    - service_template: >
+        {% if is_state('timer.gang_debounce_dim', 'active') and is_state('input_boolean.gang_nachtmodus', 'off') %}
+          rest_command.gang_lighton_recall_request
+        {% elif is_state('timer.gang_debounce_dim', 'idle') and is_state('input_boolean.gang_nachtmodus', 'off') %}
+          rest_command.gang_lighton_recall_dim_request
+        {% elif is_state('timer.gang_debounce_dim', 'active') and is_state('input_boolean.gang_nachtmodus', 'on') %} 
+          rest_command.gang_lightonnight_recall_request
+        {% else %}
+          rest_command.gang_lightonnight_recall_request
+        {% endif %}
+
+##################################################################################################
+# Garderobe Motion Detection
+##################################################################################################
+
+- alias: Garderobe_turn_on
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.0x0017880106f68789_occupancy #Replace with motion detector id
+      to: 'on'
+  condition:
+    - condition: template
+      value_template: "{{ (state_attr('binary_sensor.0x0017880106f68789_occupancy', 'occupancy')) }}"
+    - condition: state
+      entity_id:  timer.garderobe_debounce_dim
+      state: 'idle'
+    - condition: state
+      entity_id:  input_boolean.weather_good
+      state: 'off'
+  action:
+    - service_template: >
+        {% if is_state('group.garderobe', 'off') and is_state('input_boolean.garderobe_nachtmodus', 'on') %}
+          rest_command.garderobe_lightonnight_request
+        {% elif is_state('group.garderobe', 'on') and is_state('input_boolean.garderobe_nachtmodus', 'on') %}
+          rest_command.garderobe_lightonnight_recall_request
+        {% elif is_state('group.garderobe', 'off') %} 
+          rest_command.garderobe_lighton_request
+        {% else %}
+          rest_command.garderobe_lighton_recall_request
+        {% endif %}
+    - service: timer.cancel
+      entity_id: timer.garderobe_debounce
+    - service: timer.start
+      entity_id: timer.garderobe_debounce
+    - service: timer.cancel
+      entity_id: timer.garderobe_debounce_dim
+    - service: timer.start
+      entity_id: timer.garderobe_debounce_dim
+    
+- alias: Garderobe_keep_turn_on
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.0x0017880106f68789_occupancy #Replace with motion detector id
+  condition:
+    - condition: template
+      value_template: "{{ (state_attr('binary_sensor.0x0017880106f68789_occupancy', 'occupancy')) }}"
+    - condition: state
+      entity_id:  timer.garderobe_debounce
+      state: 'active'
+  action:
+    - service: timer.cancel
+      entity_id: timer.garderobe_debounce
+    - service: timer.start
+      entity_id: timer.garderobe_debounce
+    - service: timer.cancel
+      entity_id: timer.garderobe_debounce_dim
+    - service: timer.start
+      entity_id: timer.garderobe_debounce_dim
+
+- alias: Garderobe_dim
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.garderobe_debounce_dim
+  action:
+    - service_template: >
+        {% if is_state('group.garderobe', 'off') and is_state('input_boolean.garderobe_nachtmodus', 'on') %}
+          rest_command.garderobe_lightonnight_request
+        {% elif is_state('group.garderobe', 'on') and is_state('input_boolean.garderobe_nachtmodus', 'on') %}
+          rest_command.garderobe_lightonnight_recall_request
+        {% elif is_state('group.garderobe', 'off') %} 
+          rest_command.garderobe_lighton_dim_request
+        {% else %}
+          rest_command.garderobe_lighton_recall_dim_request
+        {% endif %}
+
+- alias: Garderobe_off
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.garderobe_debounce
+  action:
+    - service: rest_command.garderobe_lightoff_request
+
+##################################################################################################
+# Gang Motion Detection
+##################################################################################################
+
+- alias: Gang_turn_on
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.0x0017880106f671d9_occupancy
+      to: 'on'
+  condition:
+    - condition: template
+      value_template: "{{ (state_attr('binary_sensor.0x0017880106f671d9_occupancy', 'occupancy')) }}"
+    - condition: state
+      entity_id:  timer.gang_debounce_dim
+      state: 'idle'
+    - condition: state
+      entity_id:  input_boolean.weather_good
+      state: 'off'
+  action:
+    - service_template: >
+        {% if is_state('group.gang', 'off') and is_state('input_boolean.gang_nachtmodus', 'on') %}
+          rest_command.gang_lightonnight_request
+        {% elif is_state('group.gang', 'on') and is_state('input_boolean.gang_nachtmodus', 'on') %}
+          rest_command.gang_lightonnight_recall_request
+        {% elif (is_state('group.gang', 'off')) %} 
+          rest_command.gang_lighton_request
+        {% else %}
+          rest_command.gang_lighton_recall_request
+        {% endif %}
+    - service: timer.cancel
+      entity_id: timer.gang_debounce
+    - service: timer.start
+      entity_id: timer.gang_debounce
+    - service: timer.cancel
+      entity_id: timer.gang_debounce_dim
+    - service: timer.start
+      entity_id: timer.gang_debounce_dim
+    
+- alias: Gang_keep_turn_on
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.0x0017880106f671d9_occupancy
+  condition:
+    - condition: template
+      value_template: "{{ (state_attr('binary_sensor.0x0017880106f671d9_occupancy', 'occupancy')) }}"
+    - condition: state
+      entity_id:  timer.gang_debounce_dim
+      state: 'active'
+  action:
+    - service: timer.cancel
+      entity_id: timer.gang_debounce
+    - service: timer.start
+      entity_id: timer.gang_debounce
+    - service: timer.cancel
+      entity_id: timer.gang_debounce_dim
+    - service: timer.start
+      entity_id: timer.gang_debounce_dim
+
+- alias: Gang_dim
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.gang_debounce_dim
+  action:
+    - service_template: >
+        {% if is_state('group.gang', 'off') and is_state('input_boolean.gang_nachtmodus', 'on') %}
+          rest_command.gang_lightonnight_request
+        {% elif is_state('group.gang', 'on') and is_state('input_boolean.gang_nachtmodus', 'on') %}
+          rest_command.gang_lightonnight_recall_request
+        {% elif (is_state('group.gang', 'off')) %} 
+          rest_command.gang_lighton_dim_request
+        {% else %}
+          rest_command.gang_lighton_dim_recall_request
+        {% endif %}
+
+- alias: Gang_off
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.gang_debounce
+  action:
+    - service: rest_command.gang_lightoff_request
+
+#TODO weather
+#weather automation
+- alias: Weather condition to good
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: sensor.owm_condition
+      to: "clear sky"
+  condition:
+    - condition: and
+      conditions:
+        - condition: sun
+          before: sunset
+          before_offset: "-01:00:00"
+        - condition: sun
+          after: sunrise
+          after_offset: "+01:00:00"
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.weather_good
+
+#TODO weather
+- alias: Weather condition from good
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: sensor.owm_condition
+      from: "clear sky"
+  condition:
+    - condition: and
+      conditions:
+        - condition: sun
+          before: sunset
+          before_offset: "-01:00:00"
+        - condition: sun
+          after: sunrise
+          after_offset: "+01:00:00"
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.weather_good
+
+#TODO weather
+- alias: Weather condition night
+  initial_state: true
+  trigger:
+    platform: sun
+    event: sunset
+    offset: "-01:00:00"
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.weather_good
+
+#TODO weather
+- alias: Weather condition morning
+  initial_state: true
+  trigger:
+    platform: sun
+    event: sunrise
+    offset: "+01:00:00"
+  condition:
+    - condition: state
+      entity_id: sensor.owm_condition
+      state: "clear sky"
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.weather_good
+
+
+##################################################################################################
+# Klo Motion Detection
+
+#Ideen: Problem: Vorbeilaufen bleibt an -> Schneller dimmen und wenn nichts passiert aus
+
+#Idee: Im party modus timer kürzer?
+##################################################################################################
+
+- alias: Klo_turn_on
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.0x001788010916b47d_occupancy
+      to: 'on'
+  condition:
+    - condition: template
+      value_template: "{{ (state_attr('binary_sensor.0x001788010916b47d_occupancy', 'occupancy')) }}"
+    - condition: state
+      entity_id:  timer.klo_debounce_dim
+      state: 'idle'
+    - condition: state
+      entity_id:  input_boolean.klo_motion_off
+      state: 'off'
+  action:
+    - service_template: >
+        {% if is_state('input_boolean.klo_nachtmodus', 'on') %}
+          rest_command.klo_lightonnight_request
+        {% elif is_state('input_boolean.party_mode_klo', 'on') and is_state('input_number.party_scene_klo', '0.0') %}
+          rest_command.klo_lighton_request_party_1
+        {% elif is_state('input_boolean.party_mode_klo', 'on') and is_state('input_number.party_scene_klo', '1.0') %}
+          rest_command.klo_lighton_request_party_2
+        {% elif is_state('input_boolean.party_mode_klo', 'on') and is_state('input_number.party_scene_klo', '2.0') %}
+          rest_command.klo_lighton_request_party_3
+        {% elif is_state('input_boolean.party_mode_klo', 'on') and is_state('input_number.party_scene_klo', '3.0') %}
+          rest_command.klo_lighton_request_party_4
+        {% else %}
+          rest_command.klo_lighton_request
+        {% endif %}
+    - service: timer.cancel
+      entity_id: timer.klo_debounce
+    - service: timer.start
+      entity_id: timer.klo_debounce
+    - service: timer.cancel
+      entity_id: timer.klo_debounce_dim
+    - service: timer.start
+      entity_id: timer.klo_debounce_dim
+    - delay: 00:00:02
+    - service_template: >
+        {% if is_state('input_boolean.klo_nachtmodus', 'on') %}
+          rest_command.klo_lightonnight_request
+        {% elif is_state('input_boolean.party_mode_klo', 'on') and is_state('input_number.party_scene_klo', '0.0') %}
+          rest_command.klo_lighton_request_party_1
+        {% elif is_state('input_boolean.party_mode_klo', 'on') and is_state('input_number.party_scene_klo', '1.0') %}
+          rest_command.klo_lighton_request_party_2
+        {% elif is_state('input_boolean.party_mode_klo', 'on') and is_state('input_number.party_scene_klo', '2.0') %}
+          rest_command.klo_lighton_request_party_3
+        {% elif is_state('input_boolean.party_mode_klo', 'on') and is_state('input_number.party_scene_klo', '3.0') %}
+          rest_command.klo_lighton_request_party_4
+        {% else %}
+          rest_command.klo_lighton_request
+        {% endif %}
+    
+- alias: Klo_keep_turn_on
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.0x001788010916b47d_occupancy 
+  condition:
+    - condition: template
+      value_template: "{{ (state_attr('binary_sensor.0x001788010916b47d_occupancy', 'occupancy')) }}"
+    - condition: state
+      entity_id:  timer.klo_debounce
+      state: 'active'
+    - condition: state
+      entity_id:  input_boolean.klo_motion_off
+      state: 'off'
+  action:
+    - service: timer.cancel
+      entity_id: timer.klo_debounce
+    - service: timer.start
+      entity_id: timer.klo_debounce
+    - service: timer.cancel
+      entity_id: timer.klo_debounce_dim
+    - service: timer.start
+      entity_id: timer.klo_debounce_dim
+    - service_template: >
+        {% if is_state('input_boolean.klo_nachtmodus', 'on') %}
+          rest_command.klo_lightonnight_request
+        {% elif is_state('input_boolean.party_mode_klo', 'on') and is_state('input_number.party_scene_klo', '0.0') %}
+          rest_command.klo_lighton_request_party_1
+        {% elif is_state('input_boolean.party_mode_klo', 'on') and is_state('input_number.party_scene_klo', '1.0') %}
+          rest_command.klo_lighton_request_party_2
+        {% elif is_state('input_boolean.party_mode_klo', 'on') and is_state('input_number.party_scene_klo', '2.0') %}
+          rest_command.klo_lighton_request_party_3
+        {% elif is_state('input_boolean.party_mode_klo', 'on') and is_state('input_number.party_scene_klo', '3.0') %}
+          rest_command.klo_lighton_request_party_4
+        {% else %}
+          rest_command.klo_lighton_request
+        {% endif %}
+
+- alias: klo_dim
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.klo_debounce_dim
+  condition:
+    - condition: state
+      entity_id:  input_boolean.klo_motion_off
+      state: 'off'
+  action:
+    - service_template: >
+        {% if is_state('input_boolean.klo_nachtmodus', 'on') %}
+          rest_command.klo_lightonnight_request
+        {% else %}
+          rest_command.klo_lightdim_request
+        {% endif %}
+
+- alias: klo_off
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.klo_debounce
+  condition:
+    - condition: state
+      entity_id:  input_boolean.klo_motion_off
+      state: 'off'
+  action:
+    - service: rest_command.klo_lightoff_request
+    - service: input_number.set_value
+      data_template:
+        entity_id: input_number.party_scene_klo
+        value: '{{ range(0, 4) | random | float }}'
+
+- alias: klo_dusch_modus_activation
+  trigger:
+    - platform: state
+      entity_id: input_boolean.klo_duschen
+  action:
+    - service_template: >
+        {% if is_state('input_boolean.klo_duschen', 'on') %}
+          timer.start
+        {% else %}
+          timer.cancel
+        {% endif %}
+      entity_id: timer.klo_duschen_timer
+    - service_template: >
+        {% if is_state('input_boolean.klo_duschen', 'on') %}
+          rest_command.klo_lighton_request_shower
+        {% else %}
+          rest_command.klo_lighton_request
+        {% endif %}
+    - service_template: >
+        {% if is_state('input_boolean.klo_duschen', 'on') %}
+          input_boolean.turn_on
+        {% else %}
+          input_boolean.turn_off
+        {% endif %}
+      entity_id: input_boolean.klo_motion_off
+
+- alias: klo_dusch_modus_hell_activation
+  trigger:
+    - platform: state
+      entity_id: input_boolean.klo_duschen_hell
+      to: 'on'
+  action:
+    - service: rest_command.klo_lighton_request_shower_hell
+
+- alias: klo_dusch_modus_deactivation
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.klo_duschen_timer
+  condition:
+    - condition: state
+      entity_id:  input_boolean.klo_duschen
+      state: 'on'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.klo_motion_off
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.klo_duschen
+    - service: rest_command.klo_lighton_request
+    - service: timer.cancel
+      entity_id: timer.klo_debounce
+    - service: timer.start
+      entity_id: timer.klo_debounce
+    - service: timer.cancel
+      entity_id: timer.klo_debounce_dim
+    - service: timer.start
+      entity_id: timer.klo_debounce_dim
+
+- alias: klo_kack_modus_activation
+  trigger:
+    - platform: state
+      entity_id: input_boolean.klo_kacken
+  action:
+    - service_template: >
+        {% if is_state('input_boolean.klo_kacken', 'on') %}
+          timer.start
+        {% else %}
+          timer.cancel
+        {% endif %}
+      entity_id: timer.klo_kacken_timer
+    - service_template: >
+        {% if is_state('input_boolean.klo_kacken', 'on') %}
+          rest_command.klo_lighton_request
+        {% else %}
+          rest_command.klo_lighton_request
+        {% endif %}
+    - service_template: >
+        {% if is_state('input_boolean.klo_kacken', 'on') %}
+          input_boolean.turn_on
+        {% else %}
+          input_boolean.turn_off
+        {% endif %}
+      entity_id: input_boolean.klo_motion_off
+
+- alias: klo_kack_modus_deactivation
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.klo_kacken_timer
+  condition:
+    - condition: state
+      entity_id:  input_boolean.klo_kacken
+      state: 'on'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.klo_motion_off
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.klo_kacken
+    - service: rest_command.klo_lighton_request
+    - service: timer.cancel
+      entity_id: timer.klo_debounce
+    - service: timer.start
+      entity_id: timer.klo_debounce
+    - service: timer.cancel
+      entity_id: timer.klo_debounce_dim
+    - service: timer.start
+      entity_id: timer.klo_debounce_dim
+
+- alias: Klo_switch_action_on
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: sensor.0xb4e3f9fffe3aac1a_click
+      to: 'on'
+  action:
+    - service_template: >
+        {% if is_state('input_boolean.klo_duschen', 'off') %}
+          input_boolean.turn_on
+        {% elif is_state('input_boolean.klo_duschen', 'on') and is_state('input_boolean.klo_duschen_hell', 'off') %}
+          input_boolean.turn_on
+        {% else %}
+          input_boolean.turn_off
+        {% endif %}
+      data_template: 
+        entity_id: >
+          {% if is_state('input_boolean.klo_duschen', 'on') and is_state('input_boolean.klo_duschen_hell', 'off') %}
+            input_boolean.klo_duschen_hell
+          {% else %}
+            input_boolean.klo_duschen
+          {% endif %}
+
+- alias: Klo_switch_action_off
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: sensor.0xb4e3f9fffe3aac1a_click
+      to: 'off'
+  action:
+    - service_template: >
+        {% if is_state('input_boolean.klo_kacken', 'off') %}
+          input_boolean.turn_on
+        {% else %}
+          input_boolean.turn_off
+        {% endif %}
+      entity_id: input_boolean.klo_kacken
+
+- alias: Klo_switch_action_down #Party Modus
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: sensor.0xb4e3f9fffe3aac1a_click
+      to: 'brightness_down'
+  action:
+    - service_template: >
+        {% if is_state('input_boolean.party_mode_klo', 'off') %}
+          input_boolean.turn_on
+        {% else %}
+          input_boolean.turn_off
+        {% endif %}
+      entity_id: input_boolean.party_mode_klo
+
+
+##################################################################################################
+# Bad Motion Detection
+##################################################################################################
+
+- alias: Bad_turn_on
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.0x001788010916b16c_occupancy
+      to: 'on'
+  condition:
+    - condition: template
+      value_template: "{{ (state_attr('binary_sensor.0x001788010916b16c_occupancy', 'occupancy')) }}"
+    - condition: state
+      entity_id:  timer.bad_debounce_dim
+      state: 'idle'
+    - condition: state
+      entity_id:  input_boolean.bad_motion_off
+      state: 'off'
+  action:
+    - service_template: >
+        {% if is_state('input_boolean.bad_nachtmodus', 'on') %}
+          rest_command.bad_lightonnight_request
+        {% elif is_state('input_boolean.party_mode_bad', 'on') and is_state('input_number.party_scene_bad', '0.0') %}
+          rest_command.bad_lighton_request_party_1
+        {% elif is_state('input_boolean.party_mode_bad', 'on') and is_state('input_number.party_scene_bad', '1.0') %}
+          rest_command.bad_lighton_request_party_2
+        {% elif is_state('input_boolean.party_mode_bad', 'on') and is_state('input_number.party_scene_bad', '2.0') %}
+          rest_command.bad_lighton_request_party_3
+        {% elif is_state('input_boolean.party_mode_bad', 'on') and is_state('input_number.party_scene_bad', '3.0') %}
+          rest_command.bad_lighton_request_party_4
+        {% else %}
+          rest_command.bad_lighton_request
+        {% endif %}
+    - service: timer.cancel
+      entity_id: timer.bad_debounce
+    - service: timer.start
+      entity_id: timer.bad_debounce
+    - service: timer.cancel
+      entity_id: timer.bad_debounce_dim
+    - service: timer.start
+      entity_id: timer.bad_debounce_dim
+    - delay: 00:00:02
+    - service_template: >
+        {% if is_state('input_boolean.bad_nachtmodus', 'on') %}
+          rest_command.bad_lightonnight_request
+        {% elif is_state('input_boolean.party_mode_bad', 'on') and is_state('input_number.party_scene_bad', '0.0') %}
+          rest_command.bad_lighton_request_party_1
+        {% elif is_state('input_boolean.party_mode_bad', 'on') and is_state('input_number.party_scene_bad', '1.0') %}
+          rest_command.bad_lighton_request_party_2
+        {% elif is_state('input_boolean.party_mode_bad', 'on') and is_state('input_number.party_scene_bad', '2.0') %}
+          rest_command.bad_lighton_request_party_3
+        {% elif is_state('input_boolean.party_mode_bad', 'on') and is_state('input_number.party_scene_bad', '3.0') %}
+          rest_command.bad_lighton_request_party_4
+        {% else %}
+          rest_command.bad_lighton_request
+        {% endif %}
+    
+- alias: Bad_turn_on_sonos
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.0x001788010916b16c_occupancy
+      to: 'on'
+  condition:
+    - condition: template
+      value_template: "{{ (state_attr('binary_sensor.0x001788010916b16c_occupancy', 'occupancy')) }}"
+    - condition: state
+      entity_id: timer.bad_debounce_dim
+      state: 'idle'
+    - condition: state
+      entity_id: input_boolean.bad_motion_off
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.party_mode_bad
+      state: 'on'
+  action:
+    - service: rest_command.sonos_bad_volume_15
+    - service: rest_command.sonos_bad_join_high_five
+
+- alias: Bad_keep_turn_on
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.0x001788010916b16c_occupancy 
+  condition:
+    - condition: template
+      value_template: "{{ (state_attr('binary_sensor.0x001788010916b16c_occupancy', 'occupancy')) }}"
+    - condition: state
+      entity_id:  timer.bad_debounce
+      state: 'active'
+    - condition: state
+      entity_id:  input_boolean.bad_motion_off
+      state: 'off'
+  action:
+    - service: timer.cancel
+      entity_id: timer.bad_debounce
+    - service: timer.start
+      entity_id: timer.bad_debounce
+    - service: timer.cancel
+      entity_id: timer.bad_debounce_dim
+    - service: timer.start
+      entity_id: timer.bad_debounce_dim
+    - service_template: >
+        {% if is_state('input_boolean.bad_nachtmodus', 'on') %}
+          rest_command.bad_lightonnight_request
+        {% elif is_state('input_boolean.party_mode_bad', 'on') and is_state('input_number.party_scene_bad', '0.0') %}
+          rest_command.bad_lighton_request_party_1
+        {% elif is_state('input_boolean.party_mode_bad', 'on') and is_state('input_number.party_scene_bad', '1.0') %}
+          rest_command.bad_lighton_request_party_2
+        {% elif is_state('input_boolean.party_mode_bad', 'on') and is_state('input_number.party_scene_bad', '2.0') %}
+          rest_command.bad_lighton_request_party_3
+        {% elif is_state('input_boolean.party_mode_bad', 'on') and is_state('input_number.party_scene_bad', '3.0') %}
+          rest_command.bad_lighton_request_party_4
+        {% else %}
+          rest_command.bad_lighton_request
+        {% endif %}
+
+- alias: bad_dim
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.bad_debounce_dim
+  condition:
+    - condition: state
+      entity_id:  input_boolean.bad_motion_off
+      state: 'off'
+  action:
+    - service_template: >
+        {% if is_state('input_boolean.bad_nachtmodus', 'on') %}
+          rest_command.bad_lightonnight_request
+        {% else %}
+          rest_command.bad_lightdim_request
+        {% endif %}
+
+- alias: bad_off
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.bad_debounce
+  condition:
+    - condition: state
+      entity_id:  input_boolean.bad_motion_off
+      state: 'off'
+  action:
+    - service: rest_command.bad_lightoff_request
+    - service: input_number.set_value
+      data_template:
+        entity_id: input_number.party_scene_bad
+        value: '{{ range(0, 4) | random | float }}'
+
+- alias: bad_off_sonos
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.bad_debounce
+  condition:
+    - condition: state
+      entity_id:  input_boolean.bad_motion_off
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.party_mode_bad
+      state: 'on'
+  action:
+    - service: rest_command.sonos_bad_leave_high_five
+
+- alias: bad_dusch_modus_activation
+  trigger:
+    - platform: state
+      entity_id: input_boolean.bad_duschen
+  action:
+    - service_template: >
+        {% if is_state('input_boolean.bad_duschen', 'on') %}
+          timer.start
+        {% else %}
+          timer.cancel
+        {% endif %}
+      entity_id: timer.bad_duschen_timer
+    - service_template: >
+        {% if is_state('input_boolean.bad_duschen', 'on') %}
+          rest_command.bad_lighton_request_shower
+        {% else %}
+          rest_command.bad_lighton_request
+        {% endif %}
+    - service_template: >
+        {% if is_state('input_boolean.bad_duschen', 'on') %}
+          input_boolean.turn_on
+        {% else %}
+          input_boolean.turn_off
+        {% endif %}
+      entity_id: input_boolean.bad_motion_off
+
+- alias: bad_dusch_modus_deactivation
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.bad_duschen_timer
+  condition:
+    - condition: state
+      entity_id:  input_boolean.bad_duschen
+      state: 'on'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.bad_motion_off
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.bad_duschen
+    - service: rest_command.bad_lighton_request
+    - service: timer.cancel
+      entity_id: timer.bad_debounce
+    - service: timer.start
+      entity_id: timer.bad_debounce
+    - service: timer.cancel
+      entity_id: timer.bad_debounce_dim
+    - service: timer.start
+      entity_id: timer.bad_debounce_dim
+
+- alias: bad_kack_modus_activation
+  trigger:
+    - platform: state
+      entity_id: input_boolean.bad_kacken
+  action:
+    - service_template: >
+        {% if is_state('input_boolean.bad_kacken', 'on') %}
+          timer.start
+        {% else %}
+          timer.cancel
+        {% endif %}
+      entity_id: timer.bad_kacken_timer
+    - service_template: >
+        {% if is_state('input_boolean.bad_kacken', 'on') %}
+          rest_command.bad_lighton_request
+        {% else %}
+          rest_command.bad_lighton_request
+        {% endif %}
+    - service_template: >
+        {% if is_state('input_boolean.bad_kacken', 'on') %}
+          input_boolean.turn_on
+        {% else %}
+          input_boolean.turn_off
+        {% endif %}
+      entity_id: input_boolean.bad_motion_off
+
+- alias: bad_kack_modus_deactivation
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.bad_kacken_timer
+  condition:
+    - condition: state
+      entity_id:  input_boolean.bad_kacken
+      state: 'on'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.bad_motion_off
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.bad_kacken
+    - service: rest_command.bad_lighton_request
+    - service: timer.cancel
+      entity_id: timer.bad_debounce
+    - service: timer.start
+      entity_id: timer.bad_debounce
+    - service: timer.cancel
+      entity_id: timer.bad_debounce_dim
+    - service: timer.start
+      entity_id: timer.bad_debounce_dim
+
+- alias: Bad_switch_action_on
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: sensor.0xb4e3f9fffe3ee2a0_click
+      to: 'on'
+  action:
+    - service_template: >
+        {% if is_state('input_boolean.bad_duschen', 'off') %}
+          input_boolean.turn_on
+        {% else %}
+          input_boolean.turn_off
+        {% endif %}
+      entity_id: input_boolean.bad_duschen
+
+- alias: Bad_switch_action_off
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: sensor.0xb4e3f9fffe3ee2a0_click
+      to: 'off'
+  action:
+    - service_template: >
+        {% if is_state('input_boolean.bad_kacken', 'off') %}
+          input_boolean.turn_on
+        {% else %}
+          input_boolean.turn_off
+        {% endif %}
+      entity_id: input_boolean.bad_kacken
+
+- alias: Bad_switch_action_down #Party Modus
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: sensor.0xb4e3f9fffe3ee2a0_click
+      to: 'brightness_down'
+  action:
+    - service_template: >
+        {% if is_state('input_boolean.party_mode_bad', 'off') %}
+          input_boolean.turn_on
+        {% else %}
+          input_boolean.turn_off
+        {% endif %}
+      entity_id: input_boolean.party_mode_bad
+
+##################################################################################################
+# Wifi Down automation
+##################################################################################################
+
+- alias: Wifi_down_on
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.wifi_down
+      from: "off"
+      to: "on"
+  action:
+    - service: homeassistant.turn_off
+      entity_id: automation.flo_coming_home_light
+
+- alias: Wifi_down_off
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.wifi_down
+      from: "on"
+      to: "off"
+  action:
+    - service: homeassistant.turn_on
+      entity_id: automation.flo_coming_home_light
+
+###################################################
+# Comming Home automation - Timer Start
+###################################################
+
+- alias: 'Coming Home GPS Timer new' # new Version
+  initial_state: true
+  trigger:
+    - platform: state #GPS All
+      entity_id: sensor.someone_home_gps
+      from: 'off'
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id:  sensor.someone_home_wifi #WIFI All
+      state: 'off'    
+  action:
+    - service: timer.start
+      entity_id: timer.coming_come_timer
+
+
+###################################################
+# Comming Home automation - All
+###################################################
+
+- alias: 'Comming Home Light'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: sensor.someone_home_wifi #WiFi based
+      to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: or
+        conditions:
+          - condition: sun
+            before: sunrise
+            before_offset: "+01:00:00"
+          - condition: sun
+            after: sunset
+            after_offset: "-01:00:00"
+      - condition: state
+        entity_id:  timer.coming_come_timer
+        state: 'active'
+  action:
+    - service: hue.hue_activate_scene
+      data:
+        group_name: Wohnzimmer
+        scene_name: Entspannt
+    - service: hue.hue_activate_scene
+      data_template:
+        group_name: >
+          {% if is_state('device_tracker.iphonevhristian_3', 'home') %}
+            Christian
+          {% elif is_state('device_tracker.simons_iphone_2' , 'home') %}
+            Simon
+          {% else %}
+            Wohnzimmer
+          {% endif %}
+        scene_name: >
+          {% if is_state('device_tracker.iphonevhristian_3', 'home') %}
+            Standard
+          {% elif is_state('device_tracker.simons_iphone_2' , 'home') %}
+            Hell
+          {% else %}
+            Entspannt
+          {% endif %}
+    - delay: 0:30
+    - service: timer.cancel
+      entity_id: timer.coming_come_timer
+
+
+
+#New Version
+#http://192.168.178.73:5005/wohnzimmer/spotify/now/spotify:user:spotify:playlist:37i9dQZF1DWTlzJXLRpd4a?si=YTl1WZsRR5KniTjm6XQSWA api request to start playlist on sonos
+#source for documtation: https://github.com/jishi/node-sonos-http-api
+- alias: 'Comming Home Music'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: sensor.someone_home_wifi #WiFi based
+      to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id:  timer.coming_come_timer
+        state: 'active'
+  action:
+    - service: rest_command.sonos_playlist_clear
+    #- service: rest_command.sonos_speech_preset
+    #- delay: 00:00:03
+    #- service: rest_command.sonos_speech_preset
+    #- service: tts.google_translate_say
+    #  entity_id: media_player.wohnzimmer
+    #  data_template:
+        # message: >
+        #   {% if is_state('device_tracker.iphonevhristian_3', 'home') %}
+        #     'Hallo Chris, schön dass du Daheim bist.'
+        #   {% elif is_state('device_tracker.steffi_sugar', 'home') %}
+        #     'Hallo Steffi, schön dass du den weiten Weg von Amsterdam bis zu uns in die WG gefunden hast! Willkommen!'
+        #   {% elif is_state('device_tracker.simons_iphone_2', 'home') %}
+        #     'Hallo Simon, schön dass du Daheim bist.'
+        #   {% elif is_state('device_tracker.iphonevranziska', 'home') %}
+        #     'Hallo Franzi, schön dass du wieder bei uns in der WG bist.'
+        #   {% else %} 
+        #     'Hallo und herzlich willkommen!'
+        #   {% endif %}
+    - service: rest_command.sonos_playlist_preset
+    - delay: 00:00:03
+    - service: rest_command.sonos_playlist_preset
+    - service: input_number.set_value
+      data_template:
+        entity_id: input_number.box1
+        value: '{{ range(0, 4) | random | float }}'
+    - service_template: >
+        {% if is_state('input_number.box1', '0.0' ) %}
+          {% if is_state('device_tracker.iphonevhristian_3', 'home') %}
+            rest_command.sonos_playlist_chris_1
+          {% elif is_state('device_tracker.leas_iphone', 'home') or is_state('device_tracker.iphonevranziska', 'home') %}
+            rest_command.sonos_playlist_flo_1
+          {% else %}
+            rest_command.sonos_playlist_simon_1
+          {% endif %}
+        {% elif is_state('input_number.box1', '1.0' ) %}
+          {% if is_state('device_tracker.iphonevhristian_3', 'home') %}
+            rest_command.sonos_playlist_chris_2
+          {% elif is_state('device_tracker.leas_iphone', 'home') or is_state('device_tracker.iphonevranziska', 'home') %}
+            rest_command.sonos_playlist_flo_2
+          {% else %}
+            rest_command.sonos_playlist_simon_2
+          {% endif %}
+        {% elif is_state('input_number.box1', '2.0' ) %}
+          {% if is_state('device_tracker.iphonevhristian_3', 'home') %}
+            rest_command.sonos_playlist_chris_3
+          {% elif is_state('device_tracker.leas_iphone', 'home') or is_state('device_tracker.iphonevranziska', 'home') %}
+            rest_command.sonos_playlist_flo_3
+          {% else %}
+            rest_command.sonos_playlist_simon_3
+          {% endif %}
+        {% else %}
+          {% if is_state('device_tracker.iphonevhristian_3', 'home') %}
+            rest_command.sonos_playlist_chris_4
+          {% elif is_state('device_tracker.leas_iphone', 'home') or is_state('device_tracker.iphonevranziska', 'home') %}
+            rest_command.sonos_playlist_flo_4
+          {% else %}
+            rest_command.sonos_playlist_simon_4
+          {% endif %}
+        {% endif %}
+    - delay: 0:05
+    - service: timer.cancel
+      entity_id: timer.coming_come_timer
+
+###################################################
+# Morgen Routine
+###################################################
+- alias: 'Morgen Routine'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id:  input_boolean.good_morning
+      to: 'on'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.good_morning
+    - service: scene.turn_on
+      entity_id: scene.8kovujj0fumhirbe
+    - service: light.turn_on
+      entity_id: light.on_off_plug_1
+
+###################################################
+# Kaffeemaschine
+###################################################  
+
+- alias: "Kaffeemaschine turnOn morgen"
+  initial_state: true
+  trigger:
+    platform: time
+    at: "08:00:00"
+  condition:
+    - condition: state
+      entity_id: light.on_off_plug_1
+      state: 'off'
+    - condition: state
+      entity_id:  sensor.someone_home_wifi
+      state: 'on'
+    - condition: time
+      after: "08:00:00"
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+  action:
+    - service: light.turn_on
+      entity_id: light.on_off_plug_1
+
+- alias: "kaffeemaschine leaving home"
+  initial_state: true
+  trigger:
+    platform: state
+    entity_id: sensor.someone_home_wifi
+    to: 'off'
+    for: "01:00:00"
+  condition:
+    - condition: state
+      entity_id: light.on_off_plug_1
+      state: 'on'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.kaffee_on
+
+- alias: "kaffeemaschine coming home"
+  initial_state: true
+  trigger:
+    platform: state
+    entity_id: sensor.someone_home_wifi
+    from: 'off'
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: light.on_off_plug_1
+      state: 'off'
+    - condition: or
+      conditions:
+        - condition: time
+          after: "07:00:00"
+          before: "18:00:00"
+  action:
+    - service_template: >
+        {% if is_state('device_tracker.iphonevhristian_3', 'home') %}
+          notify.mobile_app_iphone_12_pro_christian
+        {% else %}
+          notify.mobile_app_simons_iphone_12_pro
+        {% endif %}
+      data:
+        title: "Kaffeemaschine"
+        message: "Magica anschlaten?"
+        data:
+          push:
+            category: KAFFEEON
+
+- alias: 'Kaffeemaschine An coming home'
+  initial_state: true
+  trigger:
+    platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: AN
+  condition:
+    - condition: state
+      entity_id: light.on_off_plug_1
+      state: 'off'
+  action:
+    - service: light.turn_on
+      entity_id: light.on_off_plug_1
+
+- alias: "Kaffeemaschine Status"
+  initial_state: true
+  trigger:
+    platform: state
+    entity_id: light.on_off_plug_1
+  action:
+    - service_template: >
+        {% if is_state('light.on_off_plug_1', 'on') %}
+          input_boolean.turn_on
+        {% else %}
+          input_boolean.turn_off
+        {% endif %}
+      entity_id: input_boolean.kaffee_on
+
+- alias: "Kaffeemaschine notify on"
+  initial_state: true
+  trigger:
+    platform: state
+    entity_id: light.on_off_plug_1
+    from: 'off'
+    to: 'on'
+  action:
+    - service: notify.mobile_app_iphone_12_pro_christian
+      data:
+        title: "Kaffeemaschine"
+        message: "Magica in 20 Minuten bereit einen geisteskranken Kaffee für dich zu machen"
+    - service: notify.mobile_app_simons_iphone_12_pro
+      data:
+        title: "Kaffeemaschine"
+        message: "Magica in 20 Minuten bereit einen geisteskranken Kaffee für dich zu machen"
+
+- alias: "Kaffeemaschine wait timer"
+  initial_state: true
+  trigger:
+    platform: time
+    at: "19:00:00"
+  condition:
+    - condition: state
+      entity_id: light.on_off_plug_1
+      state: 'on'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.kaffee_on
+    
+
+- alias: 'Kaffeemaschine Abend'
+  initial_state: true
+  trigger:
+    platform: state
+    entity_id: input_boolean.kaffee_on
+    from: 'on'
+    to: 'off'
+  condition:
+    - condition: state
+      entity_id: light.on_off_plug_1
+      state: 'on'
+  action:
+    - service: notify.mobile_app_iphone_12_pro_christian
+      data:
+        title: "Kaffeemaschine"
+        message: "Die Magica ist noch an"
+        data:
+          push:
+            category: KAFFEE
+    - service: notify.mobile_app_simons_iphone_12_pro
+      data:
+        title: "Kaffeemaschine"
+        message: "Die Magica ist noch an"
+        data:
+          push:
+            category: KAFFEE
+    
+
+- alias: 'Kaffeemaschine Aus'
+  initial_state: true
+  trigger:
+    platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: AUS
+  condition:
+    - condition: state
+      entity_id: timer.kaffee_on_timer
+      state: 'idle'
+  action:
+    - service: light.turn_off
+      entity_id: light.on_off_plug_1
+
+- alias: 'Kaffeemaschine Wait'
+  initial_state: true
+  trigger:
+    platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: WAIT
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.kaffee_on
+    - service: timer.start
+      entity_id: timer.kaffee_on_timer
+
+- alias: 'Kaffeemaschine Timer Reminder'
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.kaffee_on_timer
+  condition:
+    - condition: state
+      entity_id: light.on_off_plug_1
+      state: 'on'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.kaffee_on
+
+
+###################################################
+# Fernseh Automation
+################################################### 
+- alias: 'Fernseher Wohnzimmer anschalten'
+  initial_state: true
+  trigger:
+    platform: state
+    entity_id: device_tracker.tizen
+    from: 'not_home'
+    to: 'home'
+  condition:
+    - condition: state
+      entity_id: light.wohnzimmer
+      state: 'on'
+  action:
+    - service: hue.hue_activate_scene
+      data:
+        group_name: Wohnzimmer
+        scene_name: Kino Start
+    - service: rest_command.sonos_kueche_pause
+    - service: rest_command.sonos_esstisch_pause
+    - service: light.turn_on
+      entity_id: light.wohnzimmer
+      data:
+        transition: 10
+        brightness: 50
+    

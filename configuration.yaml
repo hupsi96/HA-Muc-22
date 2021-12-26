@@ -176,17 +176,17 @@ input_number:
     mode: box
 
 sensor: #709162007 Sendling- Westpark
-  - platform: dwd_weather_warnings
-    region_name: 709162007
-  - platform: openweathermap
-    api_key: !secret openWeatherApiK
-    monitored_conditions:
-      - weather
-      - temperature
-      - wind_speed
-      - humidity
-      - pressure
-      - clouds
+  #- platform: dwd_weather_warnings
+  #  region_name: 709162007
+  #- platform: openweathermap
+    #api_key: !secret openWeatherApiK
+    #monitored_conditions:
+    #  - weather
+    #  - temperature
+    #  - wind_speed
+    #  - humidity
+    #  - pressure
+    #  - clouds
   - platform: template
     sensors:
     ##or is_state('device_tracker.iphone_5', 'home')
@@ -221,14 +221,14 @@ ios:
 #TODO: add homekit
 
 
-device_tracker:
+#device_tracker:
 #Device tracker using FritzBox -> hopefully better then the GPS thing
-  - platform: fritz
-    host: 192.168.178.1
-    password: !secret fritz_password
-    interval_seconds: 5
-    consider_home: 60
-    track_new_devices: yes
+#  - platform: fritz
+#    host: 192.168.178.1
+#    password: !secret fritz_password
+#    interval_seconds: 5
+#    consider_home: 60
+#    track_new_devices: yes
 
 group: !include groups.yaml
 automation: !include automations.yaml

@@ -218,6 +218,9 @@ tuya:
 ios:
 
 #TODO: add zigbee2mqtt
+mqtt:
+  discovery: true
+  broker: 192.168.178.73
 #TODO: add homekit
 
 

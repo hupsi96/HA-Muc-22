@@ -220,7 +220,7 @@ ios:
 #TODO: add zigbee2mqtt
 mqtt:
   discovery: true
-  broker: 192.168.178.73
+  broker: 192.168.178.75
 #TODO: add homekit
 
 

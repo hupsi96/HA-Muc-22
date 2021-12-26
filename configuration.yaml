@@ -5,10 +5,236 @@ default_config:
 # Text to speech
 tts:
   - platform: google_translate
+    language: 'de'
+
+input_boolean:
+  christian_nachtmodus:
+    name: Nachtmodus von Christian
+    initial: off
+    icon: mdi:weather-night
+  simon_nachtmodus:
+    name: Nachtmodus von Simon
+    initial: off
+    icon: mdi:weather-night
+  lea_nachtmodus:
+    name: Nachtmodus von Florian
+    initial: off
+    icon: mdi:weather-night
+  test_mode:
+    name: test modus
+    initial: off
+    icon: mdi:weather-night
+  wifi_down:
+    name: WLAN Störung
+    initial: off
+    icon: mdi:wifi-strength-alert-outline
+  garderobe_nachtmodus:
+    name: Garderobe Nachtmodus
+    initial: off
+    icon: mdi:weather-night
+  gang_nachtmodus:
+    name: Gang Nachtmodus
+    initial: off
+    icon: mdi:weather-night
+  klo_nachtmodus:
+    name: Klo Nachtmodus
+    initial: off
+    icon: mdi:weather-night
+  bad_nachtmodus:
+    name: Klo Nachtmodus
+    initial: off
+    icon: mdi:weather-night
+  weather_good:
+    name: Weather good
+    initial: off
+  good_morning:
+    name: Morgen Routine
+    initial: off
+  klo_motion_off:
+    name: Klo Motion aus
+    initial: off
+  party_mode_klo:
+    name: Party Mode Klo
+    initial: off
+  party_mode_bad:
+    name: Party Mode Bad
+    initial: off
+  bad_motion_off:
+    name: Bad Motion aus
+    initial: off
+  klo_duschen:
+    name: Klo Duschen
+    initial: off
+  klo_duschen_hell:
+    name: Klo Duschen hell
+    initial: off
+  klo_kacken:
+    name: Klo Schüssel
+    initial: off
+  bad_duschen:
+    name: Bad Duschen
+    initial: off
+  bad_kacken:
+    name: Bad Schüssel
+    initial: off
+  kaffee_on:
+    name: Magica On
+    initial: on
+
+input_select:
+  scene_simon:
+    name: Scene Simon
+    options:
+      - Hell
+      - Gedimmt
+      - Nachtlicht
+    initial: Hell
+  scene_lea:
+    name: Scene Flo
+    options:
+      - Hell
+      - Sonnenuntergang Savanne
+      - Tropendämmerung
+      - Nordlichter
+      - Frühlingsblüten
+      - Nachtlicht
+    initial: Hell
+  scene_chris:
+    name: Scene Chris
+    options:
+      - Standard
+      - Sonnenuntergang Savanne
+      - Frühlingsblüten
+      - Goldener Teich
+      - Fernsehen
+      - Weglicht
+    initial: Standard
+
+timer:
+  flo_debounce:
+    duration: '00:0:05'
+  flo_nightmode_counter:
+    duration: '07:00:00'
+  chris_debounce:
+    duration: '00:0:05'
+  christian_nightmode_counter:
+    duration: '07:00:00'
+  simon_debounce:
+    duration: '00:0:05'
+  simon_nightmode_counter:
+    duration: '07:00:00'
+  garderobe_debounce_dim: #after 45 secounds the light should be dimmed in Garderobe
+    duration: '00:01:00'
+  garderobe_debounce: # after 1 minute the light should be turned off in Garderobe
+    duration: '00:01:30'
+  gang_debounce_dim: #after 45 secounds the light should be dimmed in Garderobe
+    duration: '00:01:00'
+  gang_debounce: # after 1 minute the light should be turned off in Garderobe
+    duration: '00:01:30'
+  coming_come_timer:
+    duration: '00:15:00'
+  klo_debounce_dim: #after 90 secounds the light should be dimmed in Garderobe
+    duration: '00:01:00'
+  klo_debounce: # after 2 minute the light should be turned off in Garderobe
+    duration: '00:01:30'
+  bad_debounce_dim: #after 90 secounds the light should be dimmed in Garderobe
+    duration: '00:01:00'
+  bad_debounce: # after 2 minute the light should be turned off in Garderobe
+    duration: '00:01:30'
+  klo_duschen_timer:
+    duration: '00:20:00'
+  bad_duschen_timer:
+    duration: '00:20:00'
+  kaffee_on_timer:
+    duration: '01:00:00'
+  klo_kacken_timer:
+    duration: '00:05:00'
+  bad_kacken_timer:
+    duration: '00:05:00'
+
+input_number:
+  box1:
+    name: 'Playlist'
+    initial: 0
+    min: 0
+    max: 3
+    step: 1
+    mode: box
+  party_scene_klo:
+    name: 'Party Scene'
+    initial: 0
+    min: 0
+    max: 3
+    step: 1
+    mode: box
+  party_scene_bad:
+    name: 'Party Scene'
+    initial: 0
+    min: 0
+    max: 3
+    step: 1
+    mode: box
+
+sensor: #709162007 Sendling- Westpark
+  - platform: dwd_weather_warnings
+    region_name: 709162007
+  - platform: openweathermap
+    api_key: !secret openWeatherApiK
+    monitored_conditions:
+      - weather
+      - temperature
+      - wind_speed
+      - humidity
+      - pressure
+      - clouds
+  - platform: template
+    sensors:
+    ##or is_state('device_tracker.iphone_5', 'home')
+      someone_home_gps:
+        #old Simon: device_tracker.simons_iphone
+        #TODO
+        friendly_name: Someone Home GPS
+        value_template: >
+          {% if is_state('device_tracker.iphone_von_christian_3', 'home') or is_state('device_tracker.simons_iphone' , 'home')  %}
+            on
+          {% else %}
+            off
+          {% endif %}
+      someone_home_wifi:
+      #old simon: device_tracker.aa_ed_57_f6_e8_0b
+      #TODO
+        friendly_name: Someone Home WiFi
+        value_template: >
+          {% if is_state('device_tracker.iphonevhristian_2', 'home') or is_state('device_tracker.iphonevonsimon12pro' , 'home') %}
+            on
+          {% else %}
+            off
+          {% endif %}
+tuya:
+  username: chris.huppertz@yahoo.de
+  password: !secret tuyaPW
+  country_code: 49
+
+ios:
+
+#TODO: add zigbee2mqtt
+#TODO: add homekit
+
+
+device_tracker:
+#Device tracker using FritzBox -> hopefully better then the GPS thing
+  - platform: fritz
+    host: 192.168.178.1
+    password: !secret fritz_password
+    interval_seconds: 5
+    consider_home: 60
+    track_new_devices: yes
 
 group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
+light: !include light.yaml
+rest_command: !include rest_commands.yaml
 
 #test

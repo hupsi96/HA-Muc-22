@@ -23,9 +23,9 @@ services:
     privileged: true
     restart: always
 
-  #mosquitto:
-  #  image: eclipse-mosquitto
-  #  restart: always
-  #  network_mode: host
-  #  volumes:
-  #    - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+  mosquitto:
+    image: eclipse-mosquitto
+    restart: always
+    network_mode: host
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf

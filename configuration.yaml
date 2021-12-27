@@ -218,9 +218,19 @@ tuya:
 ios:
 
 #TODO: add zigbee2mqtt
+#mqtt:
+#  discovery: true
+#  broker: 192.168.178.75
+
 mqtt:
+  broker: localhost
   discovery: true
-  broker: 192.168.178.75
+  birth_message:
+    topic: 'hass/status'
+    payload: 'online'
+  will_message:
+    topic: 'hass/status'
+    payload: 'offline'
 
 #mqtt:
 #  discovery: true

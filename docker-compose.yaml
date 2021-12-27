@@ -14,7 +14,7 @@ services:
     container_name: zigbee2mqtt
     image: koenkk/zigbee2mqtt
     volumes:
-      - ./zigbee2mqtt:/app/data
+      - /home/pi/zig2mq:/app/data
       - /run/udev:/run/udev:ro
     devices:
       - /dev/ttyACM0:/dev/ttyACM0

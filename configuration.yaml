@@ -218,9 +218,19 @@ tuya:
 ios:
 
 #TODO: add zigbee2mqtt
+#mqtt:
+#  discovery: true
+  #broker: 192.168.178.75
+
 mqtt:
   discovery: true
-  broker: 192.168.178.75
+  broker: 192.168.178.75  # Remove if you want to use builtin-in MQTT broker
+  birth_message:
+    topic: 'hass/status'
+    payload: 'online'
+  will_message:
+    topic: 'hass/status'
+    payload: 'offline'
 #TODO: add homekit
 
 

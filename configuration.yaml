@@ -219,8 +219,8 @@ ios:
 
 #TODO: add zigbee2mqtt
 mqtt:
-  discovery: true
-  #broker: 192.168.178.75
+  #discovery: true
+  broker: 192.168.178.75
 
 #mqtt:
 #  discovery: true

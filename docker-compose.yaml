@@ -9,3 +9,23 @@ services:
     restart: unless-stopped
     privileged: true
     network_mode: host
+  
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    image: koenkk/zigbee2mqtt
+    volumes:
+      - ./zigbee2mqtt:/app/data
+      - /run/udev:/run/udev:ro
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+    restart: always
+    network_mode: host
+    privileged: true
+    restart: always
+
+  mosquitto:
+    image: eclipse-mosquitto
+    restart: always
+    network_mode: host
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf

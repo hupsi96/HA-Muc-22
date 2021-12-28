@@ -24,7 +24,9 @@ services:
       - TZ=Europe/Berlin
     devices:
       # Make sure this matched your adapter location
-      - /dev/ttyUSB0:/dev/ttyACM0
+      - /dev/ttyACM0:/dev/ttyACM0
+  
+  
 
   #mosquitto:
   #  image: eclipse-mosquitto

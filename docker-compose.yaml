@@ -21,10 +21,6 @@ services:
     restart: unless-stopped
     network_mode: host
     privileged: true
-    log_driver: "json-file"
-    log_opt:
-      max-size: "100k"
-      max-file: "20"
 
   #mosquitto:
   #  image: eclipse-mosquitto

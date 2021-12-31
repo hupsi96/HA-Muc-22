@@ -24,7 +24,7 @@ services:
       - TZ=Europe/Berlin
     devices:
       # Make sure this matched your adapter location
-      - /dev/ttyACM0:/dev/ttyACM1
+      - /dev/ttyACM0:/dev/ttyACM0
   
   
 

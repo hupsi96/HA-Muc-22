@@ -12,7 +12,7 @@
       to: 'off'
   condition:
     - condition: state
-      entity_id: 'light.flo_fado'
+      entity_id: 'light.lea_2'
       state: 'off'
   action:
     - service: hue.hue_activate_scene

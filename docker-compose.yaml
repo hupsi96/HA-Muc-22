@@ -10,21 +10,21 @@ services:
     privileged: true
     network_mode: host
   
-  zigbee2mqtt:
-    container_name: zigbee2mqtt
-    image: koenkk/zigbee2mqtt
-    restart: unless-stopped
-    volumes:
-      - ./data:/app/data
-      - /run/udev:/run/udev:ro
-    ports:
-      # Frontend port
-      - 8080:8080
-    environment:
-      - TZ=Europe/Berlin
-    devices:
-      # Make sure this matched your adapter location
-      - /dev/ttyACM0:/dev/ttyACM0
+  # zigbee2mqtt:
+  #   container_name: zigbee2mqtt
+  #   image: koenkk/zigbee2mqtt
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./data:/app/data
+  #     - /run/udev:/run/udev:ro
+  #   ports:
+  #     # Frontend port
+  #     - 8080:8080
+  #   environment:
+  #     - TZ=Europe/Berlin
+  #   devices:
+  #     # Make sure this matched your adapter location
+  #     - /dev/ttyACM0:/dev/ttyACM0
   
   
 
@@ -34,3 +34,6 @@ services:
   #  network_mode: host
   #  volumes:
   #    - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+
+
+  #docker run -it -p 1883:1883 -p 9001:9001 -v mosquitto.conf:/home/pi/mosquitto/config/mosquitto.conf eclipse-mosquitto

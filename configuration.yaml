@@ -205,7 +205,7 @@ sensor: #709162007 Sendling- Westpark
       #TODO
         friendly_name: Someone Home WiFi
         value_template: >
-          {% if is_state('device_tracker.iphonevhristian_3', 'home') or is_state('device_tracker.simons_iphone_2' , 'home') %}
+          {% if is_state('device_tracker.iphonevhristian_3', 'home') or is_state('device_tracker.simons_iphone' , 'home') %}
             on
           {% else %}
             off

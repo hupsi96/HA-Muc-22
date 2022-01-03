@@ -35,7 +35,7 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: 'light.lea'
+        entity_id: 'light.lea_2'
         state: 'on'
       - condition: state
         entity_id: timer.flo_debounce
@@ -55,7 +55,7 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: 'light.lea'
+        entity_id: 'light.lea_2'
         state: 'on'
       - condition: state
         entity_id: timer.flo_debounce
@@ -278,7 +278,7 @@
       to: 'off'
   condition:
     - condition: state
-      entity_id: 'group.simon'
+      entity_id: 'light.simon'
       state: 'off'
   action:
     - service: rest_command.simon_lighton_request
@@ -299,7 +299,7 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: 'group.simon'
+        entity_id: 'light.simon'
         state: 'on'
       - condition: state
         entity_id: timer.simon_debounce
@@ -319,7 +319,7 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: 'group.simon'
+        entity_id: 'light.simon'
         state: 'on'
       - condition: state
         entity_id: timer.simon_debounce

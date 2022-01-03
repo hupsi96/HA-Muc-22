@@ -1441,7 +1441,7 @@
         group_name: >
           {% if is_state('device_tracker.iphonevhristian_3', 'home') %}
             Christian
-          {% elif is_state('device_tracker.simons_iphone_2' , 'home') %}
+          {% elif is_state('device_tracker.simons_iphone' , 'home') %}
             Simon
           {% else %}
             Wohnzimmer
@@ -1449,7 +1449,7 @@
         scene_name: >
           {% if is_state('device_tracker.iphonevhristian_3', 'home') %}
             Standard
-          {% elif is_state('device_tracker.simons_iphone_2' , 'home') %}
+          {% elif is_state('device_tracker.simons_iphone' , 'home') %}
             Hell
           {% else %}
             Entspannt

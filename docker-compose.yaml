@@ -4,7 +4,7 @@ services:
     container_name: homeassistant
     image: "ghcr.io/home-assistant/home-assistant:stable"
     volumes:
-      - /home/pi/home-assistant:/config
+      - /home/pi/homeassistant/HA-Muc-22:/config
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
     privileged: true

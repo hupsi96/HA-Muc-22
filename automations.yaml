@@ -145,7 +145,7 @@
       to: 'off'
   condition:
     - condition: state
-      entity_id: 'light.christian_2'
+      entity_id: 'light.christian'
       state: 'off'
   action:
     - service: rest_command.chris_lighton_request
@@ -166,7 +166,7 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: 'light.christian_2'
+        entity_id: 'light.christian'
         state: 'on'
       - condition: state
         entity_id: timer.chris_debounce
@@ -186,7 +186,7 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: 'light.christian_2'
+        entity_id: 'light.christian'
         state: 'on'
       - condition: state
         entity_id: timer.chris_debounce

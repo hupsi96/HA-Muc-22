@@ -218,11 +218,6 @@ tuya:
 
 ios:
 
-cloud:
-  alexa:
-    filter:
-      include_entities:
-        - sensor.someone_home_wifi
 
 #TODO: add zigbee2mqtt
 #mqtt:

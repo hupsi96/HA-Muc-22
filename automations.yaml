@@ -512,11 +512,11 @@
       state: 'off'
   action:
     - service_template: >
-        {% if is_state('group.garderobe', 'off') and is_state('input_boolean.garderobe_nachtmodus', 'on') %}
+        {% if is_state('light.garderobe', 'off') and is_state('input_boolean.garderobe_nachtmodus', 'on') %}
           rest_command.garderobe_lightonnight_request
-        {% elif is_state('group.garderobe', 'on') and is_state('input_boolean.garderobe_nachtmodus', 'on') %}
+        {% elif is_state('light.garderobe', 'on') and is_state('input_boolean.garderobe_nachtmodus', 'on') %}
           rest_command.garderobe_lightonnight_recall_request
-        {% elif is_state('group.garderobe', 'off') %} 
+        {% elif is_state('light.garderobe', 'off') %} 
           rest_command.garderobe_lighton_request
         {% else %}
           rest_command.garderobe_lighton_recall_request
@@ -560,11 +560,11 @@
         entity_id: timer.garderobe_debounce_dim
   action:
     - service_template: >
-        {% if is_state('group.garderobe', 'off') and is_state('input_boolean.garderobe_nachtmodus', 'on') %}
+        {% if is_state('light.garderobe', 'off') and is_state('input_boolean.garderobe_nachtmodus', 'on') %}
           rest_command.garderobe_lightonnight_request
-        {% elif is_state('group.garderobe', 'on') and is_state('input_boolean.garderobe_nachtmodus', 'on') %}
+        {% elif is_state('light.garderobe', 'on') and is_state('input_boolean.garderobe_nachtmodus', 'on') %}
           rest_command.garderobe_lightonnight_recall_request
-        {% elif is_state('group.garderobe', 'off') %} 
+        {% elif is_state('light.garderobe', 'off') %} 
           rest_command.garderobe_lighton_dim_request
         {% else %}
           rest_command.garderobe_lighton_recall_dim_request
@@ -601,11 +601,11 @@
       state: 'off'
   action:
     - service_template: >
-        {% if is_state('group.gang', 'off') and is_state('input_boolean.gang_nachtmodus', 'on') %}
+        {% if is_state('light.gang', 'off') and is_state('input_boolean.gang_nachtmodus', 'on') %}
           rest_command.gang_lightonnight_request
-        {% elif is_state('group.gang', 'on') and is_state('input_boolean.gang_nachtmodus', 'on') %}
+        {% elif is_state('light.gang', 'on') and is_state('input_boolean.gang_nachtmodus', 'on') %}
           rest_command.gang_lightonnight_recall_request
-        {% elif (is_state('group.gang', 'off')) %} 
+        {% elif (is_state('light.gang', 'off')) %} 
           rest_command.gang_lighton_request
         {% else %}
           rest_command.gang_lighton_recall_request
@@ -649,11 +649,11 @@
         entity_id: timer.gang_debounce_dim
   action:
     - service_template: >
-        {% if is_state('group.gang', 'off') and is_state('input_boolean.gang_nachtmodus', 'on') %}
+        {% if is_state('light.gang', 'off') and is_state('input_boolean.gang_nachtmodus', 'on') %}
           rest_command.gang_lightonnight_request
-        {% elif is_state('group.gang', 'on') and is_state('input_boolean.gang_nachtmodus', 'on') %}
+        {% elif is_state('light.gang', 'on') and is_state('input_boolean.gang_nachtmodus', 'on') %}
           rest_command.gang_lightonnight_recall_request
-        {% elif (is_state('group.gang', 'off')) %} 
+        {% elif (is_state('light.gang', 'off')) %} 
           rest_command.gang_lighton_dim_request
         {% else %}
           rest_command.gang_lighton_dim_recall_request

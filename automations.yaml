@@ -416,7 +416,7 @@
       entity_id: input_boolean.simon_nachtmodus
   action:
     - service_template: >
-        {% if (is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphone_christian_12pro', 'home')) or (is_state('device_tracker.iphone_christian_12pro', 'not_home') and ((is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone', 'home')) or (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')))) %}
+        {% if (is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphone_christian_12pro', 'home')) or (not is_state('device_tracker.iphone_christian_12pro', 'home') and ((is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone', 'home')) or (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')))) %}
           input_boolean.turn_on
         {% else %} 
           input_boolean.turn_off
@@ -430,14 +430,14 @@
         {% endif %}
       entity_id: input_boolean.gang_nachtmodus
     - service_template: >
-        {% if (is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphone_christian_12pro', 'home')) or (is_state('device_tracker.iphone_christian_12pro', 'not_home') and ((is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone', 'home')) or (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')))) %}
+        {% if (is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphone_christian_12pro', 'home')) or (not is_state('device_tracker.iphone_christian_12pro', 'home') and ((is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone', 'home')) or (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')))) %}
           input_boolean.turn_on
         {% else %} 
           input_boolean.turn_off
         {% endif %}
       entity_id: input_boolean.klo_nachtmodus
     - service_template: >
-        {% if (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')) or  (is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone', 'home')) or (is_state('device_tracker.simons_iphone', 'not_home') and is_state('device_tracker.leas_iphone', 'not_home') and is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphone_christian_12pro', 'home')) %}
+        {% if (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')) or  (is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone', 'home')) or (not is_state('device_tracker.simons_iphone', 'home') and not is_state('device_tracker.leas_iphone', 'home') and is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphone_christian_12pro', 'home')) %}
           input_boolean.turn_on
         {% else %} 
           input_boolean.turn_off

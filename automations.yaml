@@ -1619,7 +1619,9 @@
   action:
     - service_template: >
         {% if is_state('device_tracker.iphone_christian_12pro', 'home') %}
-          notify.mobile_app_iphone_12_pro_christian
+          notify.mobile_app_iphone_von_christian
+        {% elif is_state('device_tracker.leas_iphone', 'home') %}
+          notify.mobile_app_leas_iphone
         {% else %}
           notify.mobile_app_simons_iphone_12_pro
         {% endif %}
@@ -1667,11 +1669,15 @@
     from: 'off'
     to: 'on'
   action:
-    - service: notify.mobile_app_iphone_12_pro_christian
+    - service: notify.mobile_app_iphone_von_christian
       data:
         title: "Kaffeemaschine"
         message: "Magica in 20 Minuten bereit einen geisteskranken Kaffee für dich zu machen"
     - service: notify.mobile_app_simons_iphone_12_pro
+      data:
+        title: "Kaffeemaschine"
+        message: "Magica in 20 Minuten bereit einen geisteskranken Kaffee für dich zu machen"
+    - service: notify.mobile_app_leas_iphone
       data:
         title: "Kaffeemaschine"
         message: "Magica in 20 Minuten bereit einen geisteskranken Kaffee für dich zu machen"
@@ -1702,7 +1708,7 @@
       entity_id: light.kaffeemaschine
       state: 'on'
   action:
-    - service: notify.mobile_app_iphone_12_pro_christian
+    - service: notify.mobile_app_iphone_von_christian
       data:
         title: "Kaffeemaschine"
         message: "Die Magica ist noch an"
@@ -1710,6 +1716,13 @@
           push:
             category: KAFFEE
     - service: notify.mobile_app_simons_iphone_12_pro
+      data:
+        title: "Kaffeemaschine"
+        message: "Die Magica ist noch an"
+        data:
+          push:
+            category: KAFFEE
+    - service: notify.mobile_app_leas_iphone
       data:
         title: "Kaffeemaschine"
         message: "Die Magica ist noch an"

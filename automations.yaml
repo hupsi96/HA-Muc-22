@@ -407,7 +407,7 @@
     - platform: state
       entity_id: device_tracker.simons_iphone_2
     - platform: state
-      entity_id: device_tracker.iphonevhristian_3
+      entity_id: device_tracker.iphone_christian_12pro
     - platform: state
       entity_id: input_boolean.christian_nachtmodus
     - platform: state
@@ -416,28 +416,28 @@
       entity_id: input_boolean.simon_nachtmodus
   action:
     - service_template: >
-        {% if (is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphonevhristian_3', 'home')) or (is_state('device_tracker.iphonevhristian_3', 'not_home') and ((is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')))) %}
+        {% if (is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphone_christian_12pro', 'home')) or (is_state('device_tracker.iphone_christian_12pro', 'not_home') and ((is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')))) %}
           input_boolean.turn_on
         {% else %} 
           input_boolean.turn_off
         {% endif %}
       entity_id: input_boolean.garderobe_nachtmodus
     - service_template: >
-        {% if (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')) or  (is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('device_tracker.simons_iphone_2', 'not_home') and is_state('device_tracker.leas_iphone', 'not_home') and is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphonevhristian_3', 'home')) %}
+        {% if (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')) or  (is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('device_tracker.simons_iphone_2', 'not_home') and is_state('device_tracker.leas_iphone', 'not_home') and is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphone_christian_12pro', 'home')) %}
           input_boolean.turn_on
         {% else %} 
           input_boolean.turn_off
         {% endif %}
       entity_id: input_boolean.gang_nachtmodus
     - service_template: >
-        {% if (is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphonevhristian_3', 'home')) or (is_state('device_tracker.iphonevhristian_3', 'not_home') and ((is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')))) %}
+        {% if (is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphone_christian_12pro', 'home')) or (is_state('device_tracker.iphone_christian_12pro', 'not_home') and ((is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')))) %}
           input_boolean.turn_on
         {% else %} 
           input_boolean.turn_off
         {% endif %}
       entity_id: input_boolean.klo_nachtmodus
     - service_template: >
-        {% if (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')) or  (is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('device_tracker.simons_iphone_2', 'not_home') and is_state('device_tracker.leas_iphone', 'not_home') and is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphonevhristian_3', 'home')) %}
+        {% if (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')) or  (is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('device_tracker.simons_iphone_2', 'not_home') and is_state('device_tracker.leas_iphone', 'not_home') and is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphone_christian_12pro', 'home')) %}
           input_boolean.turn_on
         {% else %} 
           input_boolean.turn_off
@@ -1439,7 +1439,7 @@
     - service: hue.hue_activate_scene
       data_template:
         group_name: >
-          {% if is_state('device_tracker.iphonevhristian_3', 'home') %}
+          {% if is_state('device_tracker.iphone_christian_12pro', 'home') %}
             Christian
           {% elif is_state('device_tracker.simons_iphone' , 'home') %}
             Simon
@@ -1447,7 +1447,7 @@
             Wohnzimmer
           {% endif %}
         scene_name: >
-          {% if is_state('device_tracker.iphonevhristian_3', 'home') %}
+          {% if is_state('device_tracker.iphone_christian_12pro', 'home') %}
             Standard
           {% elif is_state('device_tracker.simons_iphone' , 'home') %}
             Hell
@@ -1484,7 +1484,7 @@
     #  entity_id: media_player.wohnzimmer
     #  data_template:
         # message: >
-        #   {% if is_state('device_tracker.iphonevhristian_3', 'home') %}
+        #   {% if is_state('device_tracker.iphone_christian_12pro', 'home') %}
         #     'Hallo Chris, schön dass du Daheim bist.'
         #   {% elif is_state('device_tracker.steffi_sugar', 'home') %}
         #     'Hallo Steffi, schön dass du den weiten Weg von Amsterdam bis zu uns in die WG gefunden hast! Willkommen!'
@@ -1504,7 +1504,7 @@
         value: '{{ range(0, 4) | random | float }}'
     - service_template: >
         {% if is_state('input_number.box1', '0.0' ) %}
-          {% if is_state('device_tracker.iphonevhristian_3', 'home') %}
+          {% if is_state('device_tracker.iphone_christian_12pro', 'home') %}
             rest_command.sonos_playlist_chris_1
           {% elif is_state('device_tracker.leas_iphone', 'home') or is_state('device_tracker.iphonevranziska', 'home') %}
             rest_command.sonos_playlist_flo_1
@@ -1512,7 +1512,7 @@
             rest_command.sonos_playlist_simon_1
           {% endif %}
         {% elif is_state('input_number.box1', '1.0' ) %}
-          {% if is_state('device_tracker.iphonevhristian_3', 'home') %}
+          {% if is_state('device_tracker.iphone_christian_12pro', 'home') %}
             rest_command.sonos_playlist_chris_2
           {% elif is_state('device_tracker.leas_iphone', 'home') or is_state('device_tracker.iphonevranziska', 'home') %}
             rest_command.sonos_playlist_flo_2
@@ -1520,7 +1520,7 @@
             rest_command.sonos_playlist_simon_2
           {% endif %}
         {% elif is_state('input_number.box1', '2.0' ) %}
-          {% if is_state('device_tracker.iphonevhristian_3', 'home') %}
+          {% if is_state('device_tracker.iphone_christian_12pro', 'home') %}
             rest_command.sonos_playlist_chris_3
           {% elif is_state('device_tracker.leas_iphone', 'home') or is_state('device_tracker.iphonevranziska', 'home') %}
             rest_command.sonos_playlist_flo_3
@@ -1528,7 +1528,7 @@
             rest_command.sonos_playlist_simon_3
           {% endif %}
         {% else %}
-          {% if is_state('device_tracker.iphonevhristian_3', 'home') %}
+          {% if is_state('device_tracker.iphone_christian_12pro', 'home') %}
             rest_command.sonos_playlist_chris_4
           {% elif is_state('device_tracker.leas_iphone', 'home') or is_state('device_tracker.iphonevranziska', 'home') %}
             rest_command.sonos_playlist_flo_4
@@ -1618,7 +1618,7 @@
           before: "18:00:00"
   action:
     - service_template: >
-        {% if is_state('device_tracker.iphonevhristian_3', 'home') %}
+        {% if is_state('device_tracker.iphone_christian_12pro', 'home') %}
           notify.mobile_app_iphone_12_pro_christian
         {% else %}
           notify.mobile_app_simons_iphone_12_pro

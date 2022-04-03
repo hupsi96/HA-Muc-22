@@ -405,7 +405,7 @@
     - platform: state
       entity_id: device_tracker.leas_iphone
     - platform: state
-      entity_id: device_tracker.simons_iphone_2
+      entity_id: device_tracker.simons_iphone
     - platform: state
       entity_id: device_tracker.iphone_christian_12pro
     - platform: state
@@ -416,28 +416,28 @@
       entity_id: input_boolean.simon_nachtmodus
   action:
     - service_template: >
-        {% if (is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphone_christian_12pro', 'home')) or (is_state('device_tracker.iphone_christian_12pro', 'not_home') and ((is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')))) %}
+        {% if (is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphone_christian_12pro', 'home')) or (is_state('device_tracker.iphone_christian_12pro', 'not_home') and ((is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone', 'home')) or (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')))) %}
           input_boolean.turn_on
         {% else %} 
           input_boolean.turn_off
         {% endif %}
       entity_id: input_boolean.garderobe_nachtmodus
     - service_template: >
-        {% if (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')) or  (is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('device_tracker.simons_iphone_2', 'not_home') and is_state('device_tracker.leas_iphone', 'not_home') and is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphone_christian_12pro', 'home')) %}
+        {% if (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')) or  (is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone', 'home')) or (is_state('device_tracker.simons_iphone', 'not_home') and is_state('device_tracker.leas_iphone', 'not_home') and is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphone_christian_12pro', 'home')) %}
           input_boolean.turn_on
         {% else %} 
           input_boolean.turn_off
         {% endif %}
       entity_id: input_boolean.gang_nachtmodus
     - service_template: >
-        {% if (is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphone_christian_12pro', 'home')) or (is_state('device_tracker.iphone_christian_12pro', 'not_home') and ((is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')))) %}
+        {% if (is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphone_christian_12pro', 'home')) or (is_state('device_tracker.iphone_christian_12pro', 'not_home') and ((is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone', 'home')) or (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')))) %}
           input_boolean.turn_on
         {% else %} 
           input_boolean.turn_off
         {% endif %}
       entity_id: input_boolean.klo_nachtmodus
     - service_template: >
-        {% if (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')) or  (is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('device_tracker.simons_iphone_2', 'not_home') and is_state('device_tracker.leas_iphone', 'not_home') and is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphone_christian_12pro', 'home')) %}
+        {% if (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.leas_iphone', 'home')) or  (is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone', 'home')) or (is_state('device_tracker.simons_iphone', 'not_home') and is_state('device_tracker.leas_iphone', 'not_home') and is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.iphone_christian_12pro', 'home')) %}
           input_boolean.turn_on
         {% else %} 
           input_boolean.turn_off
@@ -1488,7 +1488,7 @@
         #     'Hallo Chris, schön dass du Daheim bist.'
         #   {% elif is_state('device_tracker.steffi_sugar', 'home') %}
         #     'Hallo Steffi, schön dass du den weiten Weg von Amsterdam bis zu uns in die WG gefunden hast! Willkommen!'
-        #   {% elif is_state('device_tracker.simons_iphone_2', 'home') %}
+        #   {% elif is_state('device_tracker.simons_iphone', 'home') %}
         #     'Hallo Simon, schön dass du Daheim bist.'
         #   {% elif is_state('device_tracker.iphonevranziska', 'home') %}
         #     'Hallo Franzi, schön dass du wieder bei uns in der WG bist.'

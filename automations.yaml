@@ -1623,7 +1623,7 @@
         {% elif is_state('device_tracker.leas_iphone', 'home') %}
           notify.mobile_app_leas_iphone
         {% else %}
-          notify.mobile_app_simons_iphone_12_pro
+          notify.mobile_app_simons_iphone
         {% endif %}
       data:
         title: "Kaffeemaschine"
@@ -1673,7 +1673,7 @@
       data:
         title: "Kaffeemaschine"
         message: "Magica in 20 Minuten bereit einen geisteskranken Kaffee für dich zu machen"
-    - service: notify.mobile_app_simons_iphone_12_pro
+    - service: notify.mobile_app_simons_iphone
       data:
         title: "Kaffeemaschine"
         message: "Magica in 20 Minuten bereit einen geisteskranken Kaffee für dich zu machen"
@@ -1715,7 +1715,7 @@
         data:
           push:
             category: KAFFEE
-    - service: notify.mobile_app_simons_iphone_12_pro
+    - service: notify.mobile_app_simons_iphone
       data:
         title: "Kaffeemaschine"
         message: "Die Magica ist noch an"

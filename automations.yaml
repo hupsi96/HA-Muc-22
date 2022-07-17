@@ -1565,7 +1565,7 @@
     - service: scene.turn_on
       entity_id: scene.8kovujj0fumhirbe
     - service: light.turn_on
-      entity_id: light.kaffeemaschine
+      entity_id: light.on_off_plug_1
 
 ###################################################
 # Kaffeemaschine
@@ -1578,7 +1578,7 @@
     at: "08:00:00"
   condition:
     - condition: state
-      entity_id: light.kaffeemaschine
+      entity_id: light.on_off_plug_1
       state: 'off'
     - condition: state
       entity_id:  sensor.someone_home_wifi
@@ -1593,7 +1593,7 @@
       - fri
   action:
     - service: light.turn_on
-      entity_id: light.kaffeemaschine
+      entity_id: light.on_off_plug_1
 
 - alias: "kaffeemaschine leaving home"
   initial_state: true
@@ -1604,7 +1604,7 @@
     for: "01:00:00"
   condition:
     - condition: state
-      entity_id: light.kaffeemaschine
+      entity_id: light.on_off_plug_1
       state: 'on'
   action:
     - service: input_boolean.turn_off
@@ -1619,7 +1619,7 @@
     to: 'on'
   condition:
     - condition: state
-      entity_id: light.kaffeemaschine
+      entity_id: light.on_off_plug_1
       state: 'off'
     - condition: or
       conditions:
@@ -1651,20 +1651,20 @@
       actionName: AN
   condition:
     - condition: state
-      entity_id: light.kaffeemaschine
+      entity_id: light.on_off_plug_1
       state: 'off'
   action:
     - service: light.turn_on
-      entity_id: light.kaffeemaschine
+      entity_id: light.on_off_plug_1
 
 - alias: "Kaffeemaschine Status"
   initial_state: true
   trigger:
     platform: state
-    entity_id: light.kaffeemaschine
+    entity_id: light.on_off_plug_1
   action:
     - service_template: >
-        {% if is_state('light.kaffeemaschine', 'on') %}
+        {% if is_state('light.on_off_plug_1', 'on') %}
           input_boolean.turn_on
         {% else %}
           input_boolean.turn_off
@@ -1675,7 +1675,7 @@
   initial_state: true
   trigger:
     platform: state
-    entity_id: light.kaffeemaschine
+    entity_id: light.on_off_plug_1
     from: 'off'
     to: 'on'
   action:
@@ -1699,7 +1699,7 @@
     at: "19:00:00"
   condition:
     - condition: state
-      entity_id: light.kaffeemaschine
+      entity_id: light.on_off_plug_1
       state: 'on'
   action:
     - service: input_boolean.turn_off
@@ -1715,7 +1715,7 @@
     to: 'off'
   condition:
     - condition: state
-      entity_id: light.kaffeemaschine
+      entity_id: light.on_off_plug_1
       state: 'on'
   action:
     - service: notify.mobile_app_iphone_von_christian
@@ -1754,7 +1754,7 @@
       state: 'idle'
   action:
     - service: light.turn_off
-      entity_id: light.kaffeemaschine
+      entity_id: light.on_off_plug_1
 
 - alias: 'Kaffeemaschine Wait'
   initial_state: true
@@ -1778,7 +1778,7 @@
         entity_id: timer.kaffee_on_timer
   condition:
     - condition: state
-      entity_id: light.kaffeemaschine
+      entity_id: light.on_off_plug_1
       state: 'on'
   action:
     - service: input_boolean.turn_off

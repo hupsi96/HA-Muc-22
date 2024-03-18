@@ -403,7 +403,7 @@
   initial_state: true
   trigger:
     - platform: state
-      entity_id: device_tracker.android
+      entity_id: device_tracker.pc_192_168_178_60_2
     - platform: state
       entity_id: device_tracker.simons_iphone_2
     - platform: state
@@ -416,28 +416,28 @@
       entity_id: input_boolean.simon_nachtmodus
   action:
     - service_template: >
-        {% if (is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.pc_192_168_178_93', 'home')) or (not is_state('device_tracker.pc_192_168_178_93', 'home') and ((is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.android', 'home')))) %}
+        {% if (is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.pc_192_168_178_93', 'home')) or (not is_state('device_tracker.pc_192_168_178_93', 'home') and ((is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.pc_192_168_178_60_2', 'home')))) %}
           input_boolean.turn_on
         {% else %} 
           input_boolean.turn_off
         {% endif %}
       entity_id: input_boolean.garderobe_nachtmodus
     - service_template: >
-        {% if (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.android', 'home')) or  (is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (not is_state('device_tracker.simons_iphone_2', 'home') and not is_state('device_tracker.android', 'home') and is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.pc_192_168_178_93', 'home')) %}
+        {% if (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.pc_192_168_178_60_2', 'home')) or  (is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (not is_state('device_tracker.simons_iphone_2', 'home') and not is_state('device_tracker.pc_192_168_178_60_2', 'home') and is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.pc_192_168_178_93', 'home')) %}
           input_boolean.turn_on
         {% else %} 
           input_boolean.turn_off
         {% endif %}
       entity_id: input_boolean.gang_nachtmodus
     - service_template: >
-        {% if (is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.pc_192_168_178_93', 'home')) or (not is_state('device_tracker.pc_192_168_178_93', 'home') and ((is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.android', 'home')))) %}
+        {% if (is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.pc_192_168_178_93', 'home')) or (not is_state('device_tracker.pc_192_168_178_93', 'home') and ((is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.pc_192_168_178_60_2', 'home')))) %}
           input_boolean.turn_on
         {% else %} 
           input_boolean.turn_off
         {% endif %}
       entity_id: input_boolean.klo_nachtmodus
     - service_template: >
-        {% if (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.android', 'home')) or  (is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (not is_state('device_tracker.simons_iphone_2', 'home') and not is_state('device_tracker.android', 'home') and is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.pc_192_168_178_93', 'home')) %}
+        {% if (is_state('input_boolean.lea_nachtmodus', 'on') and is_state('device_tracker.pc_192_168_178_60_2', 'home')) or  (is_state('input_boolean.simon_nachtmodus', 'on') and is_state('device_tracker.simons_iphone_2', 'home')) or (not is_state('device_tracker.simons_iphone_2', 'home') and not is_state('device_tracker.pc_192_168_178_60_2', 'home') and is_state('input_boolean.christian_nachtmodus', 'on') and is_state('device_tracker.pc_192_168_178_93', 'home')) %}
           input_boolean.turn_on
         {% else %} 
           input_boolean.turn_off
@@ -1516,7 +1516,7 @@
         {% if is_state('input_number.box1', '0.0' ) %}
           {% if is_state('device_tracker.pc_192_168_178_93', 'home') %}
             rest_command.sonos_playlist_chris_1
-          {% elif is_state('device_tracker.android', 'home') or is_state('device_tracker.iphonevranziska', 'home') %}
+          {% elif is_state('device_tracker.pc_192_168_178_60_2', 'home') or is_state('device_tracker.iphonevranziska', 'home') %}
             rest_command.sonos_playlist_flo_1
           {% else %}
             rest_command.sonos_playlist_simon_1
@@ -1524,7 +1524,7 @@
         {% elif is_state('input_number.box1', '1.0' ) %}
           {% if is_state('device_tracker.pc_192_168_178_93', 'home') %}
             rest_command.sonos_playlist_chris_2
-          {% elif is_state('device_tracker.android', 'home') or is_state('device_tracker.iphonevranziska', 'home') %}
+          {% elif is_state('device_tracker.pc_192_168_178_60_2', 'home') or is_state('device_tracker.iphonevranziska', 'home') %}
             rest_command.sonos_playlist_flo_2
           {% else %}
             rest_command.sonos_playlist_simon_2
@@ -1532,7 +1532,7 @@
         {% elif is_state('input_number.box1', '2.0' ) %}
           {% if is_state('device_tracker.pc_192_168_178_93', 'home') %}
             rest_command.sonos_playlist_chris_3
-          {% elif is_state('device_tracker.android', 'home') or is_state('device_tracker.iphonevranziska', 'home') %}
+          {% elif is_state('device_tracker.pc_192_168_178_60_2', 'home') or is_state('device_tracker.iphonevranziska', 'home') %}
             rest_command.sonos_playlist_flo_3
           {% else %}
             rest_command.sonos_playlist_simon_3
@@ -1540,7 +1540,7 @@
         {% else %}
           {% if is_state('device_tracker.pc_192_168_178_93', 'home') %}
             rest_command.sonos_playlist_chris_4
-          {% elif is_state('device_tracker.android', 'home') or is_state('device_tracker.iphonevranziska', 'home') %}
+          {% elif is_state('device_tracker.pc_192_168_178_60_2', 'home') or is_state('device_tracker.iphonevranziska', 'home') %}
             rest_command.sonos_playlist_flo_4
           {% else %}
             rest_command.sonos_playlist_simon_4
@@ -1630,7 +1630,7 @@
     - service_template: >
         {% if is_state('device_tracker.pc_192_168_178_93', 'home') %}
           notify.mobile_app_iphone_von_christian
-        {% elif is_state('device_tracker.android', 'home') %}
+        {% elif is_state('device_tracker.pc_192_168_178_60_2', 'home') %}
           notify.mobile_app_leas_iphone
         {% else %}
           notify.mobile_app_simons_iphone

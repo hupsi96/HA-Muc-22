@@ -1792,9 +1792,9 @@
   initial_state: true
   trigger:
     platform: state
-    entity_id: device_tracker.tizen
-    from: 'not_home'
-    to: 'home'
+    entity_id: media_player.samsung_q60_series_65
+    from: 'off'
+    to: 'on'
   condition:
     - condition: state
       entity_id: light.wohnzimmer

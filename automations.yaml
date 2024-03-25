@@ -1575,7 +1575,7 @@
   initial_state: true
   trigger:
     platform: time
-    at: "08:00:00"
+    at: "07:00:00"
   condition:
     - condition: state
       entity_id: light.on_off_plug_1
@@ -1584,7 +1584,7 @@
       entity_id:  sensor.someone_home_wifi
       state: 'on'
     - condition: time
-      after: "08:00:00"
+      after: "07:00:00"
       weekday:
       - mon
       - tue
@@ -1601,7 +1601,7 @@
     platform: state
     entity_id: sensor.someone_home_wifi
     to: 'off'
-    for: "01:00:00"
+    for: "00:45:00"
   condition:
     - condition: state
       entity_id: light.on_off_plug_1
@@ -1625,11 +1625,11 @@
       conditions:
         - condition: time
           after: "07:00:00"
-          before: "18:00:00"
+          before: "17:00:00"
   action:
     - service_template: >
         {% if is_state('device_tracker.pc_192_168_178_93', 'home') %}
-          notify.mobile_app_iphone_von_christian
+          notify.mobile_app_iphone_von_christian_neu
         {% elif is_state('device_tracker.pc_192_168_178_60_2', 'home') %}
           notify.mobile_app_leas_iphone
         {% else %}
@@ -1637,7 +1637,7 @@
         {% endif %}
       data:
         title: "Kaffeemaschine"
-        message: "Magica anschlaten?"
+        message: "Magica anschalten?"
         data:
           push:
             category: KAFFEEON
@@ -1679,7 +1679,7 @@
     from: 'off'
     to: 'on'
   action:
-    - service: notify.mobile_app_iphone_von_christian
+    - service: notify.mobile_app_iphone_von_christian_neu
       data:
         title: "Kaffeemaschine"
         message: "Magica in 20 Minuten bereit einen geisteskranken Kaffee für dich zu machen"
@@ -1718,7 +1718,7 @@
       entity_id: light.on_off_plug_1
       state: 'on'
   action:
-    - service: notify.mobile_app_iphone_von_christian
+    - service: notify.mobile_app_iphone_von_christian_neu
       data:
         title: "Kaffeemaschine"
         message: "Die Magica ist noch an"
